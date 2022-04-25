@@ -1,3 +1,47 @@
 <resources>
     <string name="app_name">MUSINSA</string>
+
+    <!-- Main -->
+    <string name="main_tv1">아직 무신사 회원이 아니신가요?</string>
+    <string name="main_tv2">회원만의 특별한 혜택을 누려보세요!</string>
+    <string name="main_sign_up_tv">회원가입</string>
+    <string name="main_login_tv">로그인</string>
+
+    <!-- Login -->
+    <string name="login_find_id">아이디 찾기</string>
+    <string name="login_find_pw">비밀번호 찾기</string>
+    <string name="login_tv">가입만 해도 즉시 18% 할인</string>
+    <string name="retry_msg">다시 입력해 주세요.</string>
+
+    <!-- SignUp -->
+    <string name="sign_up_id_tv">아이디</string>
+    <string name="sign_up_id_hint">아이디 입력(5~11자)</string>
+    <string name="sign_up_id_empty">아이디는 필수정보 입니다.</string>
+    <string name="sign_up_id_shortage">아이디는 5자 이상이어야 합니다.</string>
+    <string name="sign_up_id_dup">이미 사용중인 아이디입니다.</string>
+    <string name="sign_up_id_content">사용 가능한 아이디입니다.</string>
+
+    <string name="sign_up_pw_tv">비밀번호</string>
+    <string name="sign_up_pw_hint">비밀번호(숫자,영문,특수문자 조합 최소8자)</string>
+    <string name="sign_up_pw_check_hint">비밀번호 확인</string>
+    <string name="sign_up_pw_empty">비밀번호는 필수정보입니다.</string>
+    <string name="sign_up_pw_shortage">8~30자 이내로 입력해 주십시오.</string>
+    <string name="sign_up_pw_dissatisfaction1">숫자, 영문 대소문자, 특수문자 중 두가지 이상으로 조합해 주십시오.</string>
+    <string name="sign_up_pw_dissatisfaction2">동일문자를 반복해서 4자 이상 사용할 수 없습니다.</string>
+    <string name="sign_up_pw_not_same">비밀번호가 일치하지 않습니다.</string>
+    <string name="sign_up_pw_check_empty">비밀번호 재확인은 필수정보입니다.</string>
+
+    <string name="sign_up_emil_hint">이메일</string>
+    <string name="sign_up_email_empty">이메일은 필수정보입니다.</string>
+    <string name="sign_up_email_incorrect">이메일 주소가 올바르지 않습니다.</string>
+    <string name="sign_up_email_correct">사용 가능한 이메일입니다.</string>
+
+    <string name="sign_up_account_explain">- 계정 분실 시 본인인증 정보로 활용됩니다.</string>
+
+    <string name="sign_up_recommend_tv">추천인(친구초대이벤트 참여 아이디)</string>
+    <string name="sign_up_recommend_hint">추천인 아이디 입력</string>
+
+    <string name="sign_up_btn">본인인증하고 회원가입</string>
+
+
 </resources>
