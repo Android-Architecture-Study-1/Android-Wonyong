@@ -1,10 +1,8 @@
 package com.example.musinsa.util
 
-import java.util.*
-
 object RandomData {
     fun getName(): String {
-        val randomInt = Random(7).nextInt()
+        val randomInt = (1..6).random()
         val nameList = mutableListOf(
             "강",
             "정",
@@ -18,7 +16,7 @@ object RandomData {
     }
 
     fun getLastName(): String {
-        val randomInt = Random(7).nextInt()
+        val randomInt = (1..6).random()
         val lastNameList = mutableListOf(
             "원용",
             "지연",
@@ -32,7 +30,7 @@ object RandomData {
     }
 
     fun getProfile(): String {
-        val randomInt = Random(7).nextInt()
+        val randomInt = (1..6).random()
         val profileList = mutableListOf(
             "https://avatars.githubusercontent.com/u/81394850?v=4",
             "https://avatars.githubusercontent.com/u/62979643?v=4",

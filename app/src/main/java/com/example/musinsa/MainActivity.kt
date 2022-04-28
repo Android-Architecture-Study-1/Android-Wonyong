@@ -1,5 +1,6 @@
 package com.example.musinsa
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import com.example.musinsa.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             mainRv.layoutManager = LinearLayoutManager(this@MainActivity)
             mainViewModel.personList.observe(this@MainActivity, Observer { person->
                 mainAdapter.submitList(person)
+                mainAdapter.notifyDataSetChanged()
             })
         }
     }
