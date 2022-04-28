@@ -1,6 +1,5 @@
 package com.example.musinsa
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,14 +23,10 @@ class MainViewModel : ViewModel() {
         tempPersonList.add(Person(id, randomProfile, randomName, randomLastName))
         _personList.value = tempPersonList
         id++
-        Log.d("MainViewModel","temp ${tempPersonList}, live ${personList.value}")
     }
 
-    fun goEditName() {
-
-    }
-
-    fun editName() {
-
+    fun editName(nameText: String, lastName: String) {
+        _name.value = nameText
+        _lastName.value = lastName
     }
 }
