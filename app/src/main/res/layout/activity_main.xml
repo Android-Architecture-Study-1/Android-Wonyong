@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toStartOf="@+id/main_edit_btn"
             app:layout_constraintStart_toEndOf="@+id/main_img"
             app:layout_constraintTop_toBottomOf="@+id/main_name_tv" />
-        
+
         <Button
             android:id="@+id/main_edit_btn"
             android:layout_width="wrap_content"

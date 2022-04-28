@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.musinsa.databinding.ActivityMainBinding
 
@@ -13,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val mainViewModel: MainViewModel by viewModels()
+        val mainAdapter = MainAdapter(this)
 
         with(binding){
             viewModel = mainViewModel
@@ -21,6 +24,12 @@ class MainActivity : AppCompatActivity() {
                 .override(100, 100)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(mainImg)
+
+            mainRv.adapter = mainAdapter
+            mainRv.layoutManager = LinearLayoutManager(this@MainActivity)
+            mainViewModel.personList.observe(this@MainActivity, Observer { person->
+                mainAdapter.submitList(person)
+            })
         }
     }
 }
