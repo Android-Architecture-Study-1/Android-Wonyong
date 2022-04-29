@@ -30,9 +30,9 @@
 
             <TextView
                 android:id="@+id/main_name_tv"
+                name="@{viewModel.name}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.name}"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintEnd_toStartOf="@+id/main_edit_btn"
@@ -41,9 +41,9 @@
 
             <TextView
                 android:id="@+id/main_last_name_tv"
+                lastName="@{viewModel.lastName}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.lastName}"
                 android:textColor="@color/black"
                 android:textSize="25sp"
                 app:layout_constraintBottom_toTopOf="@+id/main_rv"

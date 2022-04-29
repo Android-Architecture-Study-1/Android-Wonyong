@@ -13,21 +13,11 @@ import com.example.musinsa.databinding.PersonFrameBinding
 class MainAdapter(private val context: Context) :
     ListAdapter<Person, MainAdapter.PersonViewHolder>(PERSON_COMPARATOR) {
 
-    inner class PersonViewHolder(binding: PersonFrameBinding) :
+    inner class PersonViewHolder(private val binding: PersonFrameBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val name = binding.personName
-        private val lastName = binding.personLastName
-        private val profile = binding.personImg
-
-        fun bind(_profile: String, _name: String, _lastName: String) {
-            Glide.with(context)
-                .load(_profile)
-                .override(100, 100)
-                .error(R.drawable.ic_launcher_foreground)
-                .into(profile)
-            name.text = _name
-            lastName.text = _lastName
+        fun bind(person: Person) {
+            binding.model = person
         }
     }
 
@@ -40,7 +30,7 @@ class MainAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
         val current = getItem(position)
         with(holder) {
-            bind(current.profile, current.name, current.lastName)
+            bind(current)
         }
     }
 
