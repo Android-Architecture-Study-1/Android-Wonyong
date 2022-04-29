@@ -12,6 +12,7 @@ class MainViewModel : ViewModel() {
     private val _name: MutableLiveData<String> = MutableLiveData("강")
     private val _lastName: MutableLiveData<String> = MutableLiveData("원용")
 
+    val mainProfile = "https://avatars.githubusercontent.com/u/82709044?v=4"
     val personList: LiveData<List<Person>> get() = _personList
     val name get() = _name
     val lastName get() = _lastName

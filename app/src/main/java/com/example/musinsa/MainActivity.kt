@@ -37,12 +37,6 @@ class MainActivity : AppCompatActivity() {
             viewModel = mainViewModel
             binding.lifecycleOwner = this@MainActivity
 
-            Glide.with(this@MainActivity)
-                .load("https://avatars.githubusercontent.com/u/82709044?v=4")
-                .override(100, 100)
-                .error(R.drawable.ic_launcher_foreground)
-                .into(mainImg)
-
             mainRv.adapter = mainAdapter
             mainRv.layoutManager = LinearLayoutManager(this@MainActivity)
             mainViewModel.personList.observe(this@MainActivity, Observer { person ->
