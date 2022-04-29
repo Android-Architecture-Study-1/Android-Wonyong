@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val mainViewModel: MainViewModel by viewModels()
-        val mainAdapter = MainAdapter(this)
 
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -35,14 +34,8 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             viewModel = mainViewModel
-            binding.lifecycleOwner = this@MainActivity
-
-            mainRv.adapter = mainAdapter
-            mainRv.layoutManager = LinearLayoutManager(this@MainActivity)
-            mainViewModel.personList.observe(this@MainActivity, Observer { person ->
-                mainAdapter.submitList(person)
-                mainAdapter.notifyDataSetChanged()
-            })
+            lifecycleOwner = this@MainActivity
+            mainRv.adapter = MainAdapter(this@MainActivity)
 
             mainEditBtn.setOnClickListener {
                 val intent = Intent(

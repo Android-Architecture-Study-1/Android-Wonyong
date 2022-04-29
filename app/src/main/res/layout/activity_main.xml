@@ -64,9 +64,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_rv"
+                bind_list="@{viewModel.personList}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/main_img" />
