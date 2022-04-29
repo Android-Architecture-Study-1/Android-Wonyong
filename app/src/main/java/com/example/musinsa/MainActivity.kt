@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             viewModel = mainViewModel
             binding.lifecycleOwner = this@MainActivity
+
             Glide.with(this@MainActivity)
                 .load("https://avatars.githubusercontent.com/u/82709044?v=4")
                 .override(100, 100)
