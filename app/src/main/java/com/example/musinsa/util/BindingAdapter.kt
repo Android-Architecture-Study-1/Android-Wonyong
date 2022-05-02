@@ -1,9 +1,14 @@
 package com.example.musinsa.util
 
 import android.annotation.SuppressLint
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -37,15 +42,39 @@ object BindingAdapter {
             .into(imageView)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @JvmStatic
     @BindingAdapter("bind_list")
+    @JvmStatic
     fun setRecyclerView(
         recyclerView: RecyclerView,
         personList: List<Person>,
     ) {
-        val adapter = recyclerView.adapter as MainAdapter
-        adapter.submitList(personList)
-        adapter.notifyDataSetChanged()
+        val adapter = getAdapter(recyclerView)
+        adapter.updateItems(personList)
+    }
+
+    private fun getAdapter(recyclerView: RecyclerView): MainAdapter {
+        return if(recyclerView.adapter != null && recyclerView.adapter is MainAdapter) {
+            recyclerView.adapter as MainAdapter
+        } else {
+            val mainAdapter = MainAdapter()
+            recyclerView.adapter = mainAdapter
+            mainAdapter
+        }
+    }
+
+    @BindingAdapter("text")
+    fun setEditText(view: EditText, listener: InverseBindingListener) {
+        view.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+            override fun afterTextChanged(p0: Editable?) {
+                listener.onChange()
+            }
+        })
+    }
+
+    @InverseBindingAdapter(attribute = "text", event = "onChanged")
+    fun getEditText(view: EditText): String {
+        return view.text.toString()
     }
 }

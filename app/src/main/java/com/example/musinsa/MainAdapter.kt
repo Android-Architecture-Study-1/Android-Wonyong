@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.musinsa.databinding.PersonFrameBinding
 
-class MainAdapter(private val context: Context) :
+class MainAdapter:
     ListAdapter<Person, MainAdapter.PersonViewHolder>(PERSON_COMPARATOR) {
 
     inner class PersonViewHolder(private val binding: PersonFrameBinding) :
@@ -32,6 +32,11 @@ class MainAdapter(private val context: Context) :
         with(holder) {
             bind(current)
         }
+    }
+
+    fun updateItems(personList:List<Person>){
+        submitList(personList)
+        notifyItemChanged(personList.size)
     }
 
     companion object {
