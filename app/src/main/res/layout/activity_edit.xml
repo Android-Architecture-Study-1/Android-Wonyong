@@ -5,6 +5,13 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.example.musinsa.MainViewModel" />
+
+        <variable
+            name="editMain"
+            type="com.example.musinsa.EditActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +26,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/name_tv"
             android:maxLines="1"
+            android:text="@={vm.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,6 +38,7 @@
             android:layout_marginTop="20dp"
             android:hint="@string/last_name_tv"
             android:maxLines="1"
+            android:text="@={vm.lastName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name_et" />
@@ -39,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:onClick="@{()->editMain.editName()}"
             android:text="@string/edit_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
