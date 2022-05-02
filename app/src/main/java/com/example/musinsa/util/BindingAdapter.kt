@@ -61,20 +61,4 @@ object BindingAdapter {
             mainAdapter
         }
     }
-
-    @BindingAdapter("text")
-    fun setEditText(view: EditText, listener: InverseBindingListener) {
-        view.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-            override fun afterTextChanged(p0: Editable?) {
-                listener.onChange()
-            }
-        })
-    }
-
-    @InverseBindingAdapter(attribute = "text", event = "onChanged")
-    fun getEditText(view: EditText): String {
-        return view.text.toString()
-    }
 }
