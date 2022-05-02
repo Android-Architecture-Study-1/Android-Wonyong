@@ -20,14 +20,14 @@ class MainAdapter(private val context: Context) :
         private val lastName = binding.personLastName
         private val profile = binding.personImg
 
-        fun bind(_profile: String, _name: String, _lastName: String) {
+        fun bind(person: Person) {
             Glide.with(context)
-                .load(_profile)
+                .load(person.profile)
                 .override(100, 100)
                 .error(R.drawable.ic_launcher_foreground)
                 .into(profile)
-            name.text = _name
-            lastName.text = _lastName
+            name.text = person.name
+            lastName.text = person.lastName
         }
     }
 
@@ -40,7 +40,7 @@ class MainAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
         val current = getItem(position)
         with(holder) {
-            bind(current.profile, current.name, current.lastName)
+            bind(current)
         }
     }
 
