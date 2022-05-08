@@ -15,47 +15,51 @@ import com.example.musinsa.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    lateinit var mainAdapter: MainAdapter
+    private val mainViewModel: MainViewModel by viewModels()
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val name = it.data?.getStringExtra("name") ?: ""
+                val lastName = it.data?.getStringExtra("lastName") ?: ""
+                mainViewModel.editName(name, lastName)
+            }
+        }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        val mainViewModel: MainViewModel by viewModels()
-        val mainAdapter = MainAdapter(this)
-
-        activityResultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == RESULT_OK) {
-                    val name = it.data?.getStringExtra("name") ?: ""
-                    val lastName = it.data?.getStringExtra("lastName") ?: ""
-                    mainViewModel.editName(name, lastName)
-                }
-            }
-
-        with(binding) {
+        binding = DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
             viewModel = mainViewModel
-            binding.lifecycleOwner = this@MainActivity
-            Glide.with(this@MainActivity)
-                .load("https://avatars.githubusercontent.com/u/82709044?v=4")
-                .override(100, 100)
-                .error(R.drawable.ic_launcher_foreground)
-                .into(mainImg)
-
-            mainRv.adapter = mainAdapter
-            mainRv.layoutManager = LinearLayoutManager(this@MainActivity)
-            mainViewModel.personList.observe(this@MainActivity, Observer { person ->
-                mainAdapter.submitList(person)
-                mainAdapter.notifyDataSetChanged()
-            })
-
-            mainEditBtn.setOnClickListener {
-                val intent = Intent(
-                    this@MainActivity,
-                    EditActivity::class.java
-                )
-                activityResultLauncher.launch(intent)
-            }
+            lifecycleOwner = this@MainActivity
         }
+
+        initProfile()
+        initAdapter()
+
+        binding.mainEditBtn.setOnClickListener {
+            val intent = Intent(
+                this@MainActivity,
+                EditActivity::class.java
+            )
+            activityResultLauncher.launch(intent)
+        }
+    }
+
+    private fun initProfile() {
+        Glide.with(this@MainActivity)
+            .load("https://avatars.githubusercontent.com/u/82709044?v=4")
+            .override(100, 100)
+            .error(R.drawable.ic_launcher_foreground)
+            .into(binding.mainImg)
+    }
+
+    private fun initAdapter() {
+        mainAdapter = MainAdapter(this)
+        binding.mainRv.adapter = mainAdapter
+        mainViewModel.personList.observe(this@MainActivity, Observer { person ->
+            mainAdapter.submitList(person)
+            mainAdapter.notifyDataSetChanged()
+        })
     }
 }
