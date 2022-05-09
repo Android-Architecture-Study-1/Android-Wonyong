@@ -1,32 +1,48 @@
 package com.example.musinsa
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.musinsa.util.RandomData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private var id = 0
-    private val tempPersonList = mutableListOf<Person>()
-    private val _personList: MutableLiveData<List<Person>> = MutableLiveData(emptyList())
-    private val _name: MutableLiveData<String> = MutableLiveData("강")
-    private val _lastName: MutableLiveData<String> = MutableLiveData("원용")
+class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
+    private val _name: MutableStateFlow<String> = MutableStateFlow("강")
+    private val _lastName: MutableStateFlow<String> = MutableStateFlow("원용")
+    val name = _name.asStateFlow()
+    val lastName = _lastName.asStateFlow()
 
-    val personList: LiveData<List<Person>> get() = _personList
-    val name get() = _name
-    val lastName get() = _lastName
+    private val _personList: MutableStateFlow<UiState> = MutableStateFlow(UiState())
+    val personList: StateFlow<UiState> = _personList.asStateFlow()
 
     fun addPerson() {
-        val randomName = RandomData.getName()
-        val randomLastName = RandomData.getLastName()
-        val randomProfile = RandomData.getProfile()
-        tempPersonList.add(Person(id, randomProfile, randomName, randomLastName))
-        _personList.value = tempPersonList
-        id++
+        viewModelScope.launch {
+            repository.addPerson()
+            repository.personList.collect { mPersonList ->
+                _personList.update { it.copy(personList = mPersonList.toCollection(mutableListOf())) }
+            }
+        }
     }
 
     fun editName(nameText: String, lastName: String) {
         _name.value = nameText
         _lastName.value = lastName
+    }
+}
+
+data class UiState(
+    val personList: List<Person> = mutableListOf()
+)
+
+class MainViewModelFactory(private val repository: MainRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MainViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

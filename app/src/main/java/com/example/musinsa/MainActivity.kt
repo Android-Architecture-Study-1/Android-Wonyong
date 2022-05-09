@@ -1,22 +1,24 @@
 package com.example.musinsa
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.musinsa.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var mainAdapter: MainAdapter
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModelFactory((application as MainApplication).repository)
+    }
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
@@ -26,13 +28,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main).apply {
-            viewModel = mainViewModel
-            lifecycleOwner = this@MainActivity
-        }
+        binding = DataBindingUtil.setContentView<ActivityMainBinding?>(this, R.layout.activity_main)
+            .apply {
+                viewModel = mainViewModel
+                lifecycleOwner = this@MainActivity
+            }
 
         initProfile()
         initAdapter()
@@ -57,9 +59,12 @@ class MainActivity : AppCompatActivity() {
     private fun initAdapter() {
         mainAdapter = MainAdapter(this)
         binding.mainRv.adapter = mainAdapter
-        mainViewModel.personList.observe(this@MainActivity, Observer { person ->
-            mainAdapter.submitList(person)
-            mainAdapter.notifyDataSetChanged()
-        })
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.personList.collect() { uiState ->
+                    mainAdapter.submitList(uiState.personList)
+                }
+            }
+        }
     }
 }
