@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel constructor(private val repository: MainRepository) : ViewModel() {
@@ -15,14 +14,14 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
     val name = _name.asStateFlow()
     val lastName = _lastName.asStateFlow()
 
-    private val _personList: MutableStateFlow<UiState> = MutableStateFlow(UiState())
-    val personList: StateFlow<UiState> = _personList.asStateFlow()
+    private val _personList: MutableStateFlow<List<Person>> = MutableStateFlow(emptyList())
+    val personList: StateFlow<List<Person>> = _personList.asStateFlow()
 
     fun addPerson() {
         viewModelScope.launch {
             repository.addPerson()
             repository.personList.collect { mPersonList ->
-                _personList.update { it.copy(personList = mPersonList.toCollection(mutableListOf())) }
+                _personList.emit(mPersonList.toList())
             }
         }
     }
@@ -32,10 +31,6 @@ class MainViewModel constructor(private val repository: MainRepository) : ViewMo
         _lastName.value = lastName
     }
 }
-
-data class UiState(
-    val personList: List<Person> = mutableListOf()
-)
 
 class MainViewModelFactory(private val repository: MainRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

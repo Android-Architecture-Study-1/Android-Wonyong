@@ -61,8 +61,8 @@ class MainActivity : AppCompatActivity() {
         binding.mainRv.adapter = mainAdapter
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.personList.collect { uiState ->
-                    mainAdapter.submitList(uiState.personList)
+                mainViewModel.personList.collect {
+                    mainAdapter.submitList(it)
                 }
             }
         }
