@@ -1,8 +1,7 @@
 package com.example.musinsa
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.musinsa.databinding.ActivityMainBinding
+import com.example.musinsa.util.CustomActivityResultContract
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -20,12 +20,8 @@ class MainActivity : AppCompatActivity() {
         MainViewModelFactory((application as MainApplication).repository)
     }
     private val activityResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                val name = it.data?.getStringExtra("name") ?: ""
-                val lastName = it.data?.getStringExtra("lastName") ?: ""
-                mainViewModel.editName(name, lastName)
-            }
+        registerForActivityResult(CustomActivityResultContract.SetName()) {
+            if (it != null) mainViewModel.editName(it.first, it.second)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +35,7 @@ class MainActivity : AppCompatActivity() {
         initProfile()
         initAdapter()
 
-        binding.mainEditBtn.setOnClickListener {
-            val intent = Intent(
-                this@MainActivity,
-                EditActivity::class.java
-            )
-            activityResultLauncher.launch(intent)
-        }
+        binding.mainEditBtn.setOnClickListener { activityResultLauncher.launch() }
     }
 
     private fun initProfile() {
